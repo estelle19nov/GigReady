@@ -153,22 +153,44 @@ def view_readiness_report(musician):
         print(f"{song.title:<30} {score:>6}/100  {advice:<25}")
 
 
+BOX_WIDTH = 44
+
+
+def print_banner():
+    """Print the GigReady welcome banner."""
+    inner = BOX_WIDTH - 2
+    print("+" + "=" * inner + "+")
+    print("|" + " " * inner + "|")
+    print("|" + "G I G R E A D Y".center(inner) + "|")
+    print("|" + "Track.  Practice.  Perform.".center(inner) + "|")
+    print("|" + " " * inner + "|")
+    print("+" + "=" * inner + "+")
+
+
 def print_menu():
     """Print the main menu options to the console."""
-    print("\n========== GigReady ==========")
-    print("1. Log a practice session")
-    print("2. View all songs")
-    print("3. View weekly goal progress")
-    print("4. Set weekly goal")
-    print("5. View song details")
-    print("6. View gig readiness report")
-    print("7. Save and quit")
-    print("==============================")
+    options = [
+        "1. Log a practice session",
+        "2. View all songs",
+        "3. View weekly goal progress",
+        "4. Set weekly goal",
+        "5. View song details",
+        "6. View gig readiness report",
+        "7. Save and quit",
+    ]
+    inner = BOX_WIDTH - 2
+    print()
+    print("+" + "-" * inner + "+")
+    print("|" + " MENU ".center(inner) + "|")
+    print("+" + "-" * inner + "+")
+    for opt in options:
+        print("| " + opt.ljust(inner - 2) + " |")
+    print("+" + "-" * inner + "+")
 
 
 def main():
     """Main entry point: load data, run the menu loop, and save on exit."""
-    print("Welcome to GigReady!")
+    print_banner()
 
     musician = load_data()
     if musician is None:
