@@ -72,7 +72,7 @@ def view_weekly_goal(musician):
     """Show the user's weekly practice goal and current progress as a progress bar."""
     print("\n--- Weekly Goal ---")
     if musician.weekly_goal == 0:
-        print("No weekly goal set. Use option 4 to set one.")
+        print("No weekly goal set. Use option 5 to set one.")
         return
 
     this_week = get_this_week_dates()

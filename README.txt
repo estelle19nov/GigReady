@@ -11,20 +11,20 @@ No external libraries required. Uses Python built-in modules only (json, datetim
 FILES
 -----
 main.py       - Main program. Run this file to start the application.
-models.py     - Class definitions and readiness scoring logic.
-file_io.py    - Functions to save and load data (gigready_data.json).
+models.py     - Class definitions, readiness scoring, and practice planning logic.
+file_io.py    - Functions to save/load data and export reports.
 tests.py      - Assert-based test suite. Run with: python3 tests.py
 
 DATA
 ----
-Practice data is automatically saved to gigready_data.json in the project folder.
+Practice data is saved to gigready_data.json in the project folder when you choose "Save and quit".
 This file is created on first save and loaded on startup.
 
 ADVANCED TOPICS USED
 --------------------
 - Classes/Objects (Week 7): Song, PracticeSession, Musician classes
 - Advanced Flow / Exception Handling (Week 8): try-except in file_io.py and prompt_int()
-- File I/O (Week 9): JSON read/write in file_io.py
+- File I/O (Week 9): JSON read/write and text report export in file_io.py
 - Testing with assert (Week 10): 13 test cases in tests.py
 
 MAIN FEATURES

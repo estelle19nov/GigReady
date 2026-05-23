@@ -29,15 +29,15 @@ No external libraries required. Uses only Python built-in modules (`json`, `date
 python3 tests.py
 ```
 
-12 tests covering positive, edge, and negative cases.
+13 tests covering positive, edge, and negative cases.
 
 ## Files
 
 | File | Purpose |
 |---|---|
 | `main.py` | Main program with menu loop |
-| `models.py` | `Song`, `PracticeSession`, `Musician` classes + readiness scoring |
-| `file_io.py` | Save/load data as JSON |
+| `models.py` | `Song`, `PracticeSession`, `Musician` classes + readiness scoring and practice planning |
+| `file_io.py` | Save/load data as JSON and export a text report |
 | `tests.py` | Assert-based test suite |
 
 ## Built With
@@ -47,5 +47,5 @@ Course: **COMP9001 - Introduction to Programming** (University of Sydney)
 Advanced topics demonstrated:
 - Classes / Objects (Week 7)
 - Exception Handling - `try-except`, `raise` (Week 8)
-- File I/O - JSON read/write (Week 9)
+- File I/O - JSON read/write and text report export (Week 9)
 - Testing with `assert` - positive / edge / negative cases (Week 10)
