@@ -67,6 +67,16 @@ def test_songs_needing_attention_order():
     assert ordered[0].title == "Weak Song"
 
 
+def test_practice_plan_prioritises_weakest():
+    """Practice plan should start with the weakest song."""
+    musician = Musician("Dani")
+    musician.log_session("Ready", PracticeSession("2026-05-18", 100, 1))
+    musician.log_session("Struggling", PracticeSession("2026-05-18", 5, 5))
+    plan = musician.generate_practice_plan(num_songs=2)
+    assert plan[0][0].title == "Struggling"
+    assert plan[0][1] >= plan[1][1]  # weakest gets >= minutes than next
+
+
 def test_practice_session_to_and_from_dict():
     """to_dict and from_dict should be inverses."""
     session = PracticeSession("2026-05-18", 30, 3, "felt good")
@@ -132,6 +142,7 @@ def run_all_tests():
         test_musician_weekly_total,
         test_song_readiness_score,
         test_songs_needing_attention_order,
+        test_practice_plan_prioritises_weakest,
         test_practice_session_to_and_from_dict,
         # Edge
         test_song_no_sessions,

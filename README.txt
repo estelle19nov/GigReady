@@ -25,11 +25,14 @@ ADVANCED TOPICS USED
 - Classes/Objects (Week 7): Song, PracticeSession, Musician classes
 - Advanced Flow / Exception Handling (Week 8): try-except in file_io.py and prompt_int()
 - File I/O (Week 9): JSON read/write in file_io.py
-- Testing with assert (Week 10): 12 test cases in tests.py
+- Testing with assert (Week 10): 13 test cases in tests.py
 
 MAIN FEATURES
 -------------
 - Log practice sessions by song
 - View totals and average difficulty
+- ASCII bar chart of practice time per song
 - Set and track a weekly practice goal
 - Generate a gig readiness report that recommends which songs need attention
+- Generate today's practice plan based on readiness scores
+- Export a plain-text practice report to gigready_report.txt

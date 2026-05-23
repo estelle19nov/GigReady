@@ -6,7 +6,7 @@
 
 import datetime
 from models import Musician, PracticeSession
-from file_io import save_data, load_data
+from file_io import save_data, load_data, export_report
 
 
 def get_today():
@@ -122,6 +122,63 @@ def view_song_detail(musician):
         print(f"  {i}. {s.date} | {s.duration} min | Difficulty: {s.difficulty}/5{note_str}")
 
 
+def view_practice_chart(musician):
+    """Show a horizontal ASCII bar chart of practice minutes per song."""
+    print("\n--- Practice Time Chart ---")
+    if not musician.songs:
+        print("No songs logged yet.")
+        return
+
+    max_minutes = max(s.total_minutes() for s in musician.songs.values())
+    if max_minutes == 0:
+        print("No practice time logged.")
+        return
+
+    bar_max = 30  # max bar width in characters
+    songs_sorted = sorted(
+        musician.songs.values(),
+        key=lambda s: -s.total_minutes()
+    )
+
+    for song in songs_sorted:
+        minutes = song.total_minutes()
+        bar_len = int((minutes / max_minutes) * bar_max)
+        bar = "#" * bar_len
+        print(f"{song.title:<20} |{bar:<30}| {minutes} min")
+
+
+def view_practice_plan(musician):
+    """Show today's suggested practice plan based on readiness scores."""
+    print("\n--- Today's Practice Plan ---")
+    if not musician.songs:
+        print("No songs logged yet. Log a session first!")
+        return
+
+    plan = musician.generate_practice_plan(num_songs=3)
+    total = sum(minutes for _, minutes in plan)
+
+    print(f"Suggested session total: {total} minutes")
+    print("-" * 50)
+    for song, minutes in plan:
+        score = song.readiness_score()
+        print(f"  {song.title:<22} {minutes:>3} min   (readiness: {score:>3}/100)")
+    print("\nTip: weaker songs get more time to bring them up to gig level.")
+
+
+def export_practice_report(musician):
+    """Save a human-readable practice report to disk and show the path."""
+    print("\n--- Export Practice Report ---")
+    if not musician.songs:
+        print("No songs logged yet. Nothing to export.")
+        return
+
+    try:
+        path = export_report(musician)
+        print(f"Report saved to:\n  {path}")
+    except OSError as e:
+        print(f"Could not save report: {e}")
+
+
 def view_readiness_report(musician):
     """Show which songs need the most attention before a performance."""
     print("\n--- Gig Readiness Report ---")
@@ -170,13 +227,16 @@ def print_banner():
 def print_menu():
     """Print the main menu options to the console."""
     options = [
-        "1. Log a practice session",
-        "2. View all songs",
-        "3. View weekly goal progress",
-        "4. Set weekly goal",
-        "5. View song details",
-        "6. View gig readiness report",
-        "7. Save and quit",
+        "1.  Log a practice session",
+        "2.  View all songs",
+        "3.  View practice chart",
+        "4.  View weekly goal progress",
+        "5.  Set weekly goal",
+        "6.  View song details",
+        "7.  View gig readiness report",
+        "8.  Today's practice plan",
+        "9.  Export practice report",
+        "10. Save and quit",
     ]
     inner = BOX_WIDTH - 2
     print()
@@ -204,26 +264,32 @@ def main():
 
     while True:
         print_menu()
-        choice = input("Choose an option (1-7): ").strip()
+        choice = input("Choose an option (1-10): ").strip()
 
         if choice == "1":
             log_session(musician)
         elif choice == "2":
             view_all_songs(musician)
         elif choice == "3":
-            view_weekly_goal(musician)
+            view_practice_chart(musician)
         elif choice == "4":
-            set_weekly_goal(musician)
+            view_weekly_goal(musician)
         elif choice == "5":
-            view_song_detail(musician)
+            set_weekly_goal(musician)
         elif choice == "6":
-            view_readiness_report(musician)
+            view_song_detail(musician)
         elif choice == "7":
+            view_readiness_report(musician)
+        elif choice == "8":
+            view_practice_plan(musician)
+        elif choice == "9":
+            export_practice_report(musician)
+        elif choice == "10":
             save_data(musician)
             print("Data saved. See you next practice!")
             break
         else:
-            print("Invalid option. Please choose 1-7.")
+            print("Invalid option. Please choose 1-10.")
 
 
 if __name__ == "__main__":

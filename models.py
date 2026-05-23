@@ -113,3 +113,22 @@ class Musician:
             self.songs.values(),
             key=lambda song: (song.readiness_score(), -song.average_difficulty())
         )
+
+    def generate_practice_plan(self, num_songs=3):
+        """Suggest songs to practise today based on readiness scores.
+
+        Returns a list of (song, suggested_minutes) tuples, prioritising the
+        weakest songs and assigning more minutes to lower scores.
+        """
+        weakest = self.songs_needing_attention()[:num_songs]
+        plan = []
+        for song in weakest:
+            score = song.readiness_score()
+            if score < 30:
+                minutes = 25
+            elif score < 60:
+                minutes = 20
+            else:
+                minutes = 15
+            plan.append((song, minutes))
+        return plan

@@ -7,6 +7,7 @@ from models import Musician, PracticeSession
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SAVE_FILE = os.path.join(BASE_DIR, "gigready_data.json")
+REPORT_FILE = os.path.join(BASE_DIR, "gigready_report.txt")
 
 
 def save_data(musician):
@@ -51,3 +52,33 @@ def load_data():
     except (KeyError, ValueError, TypeError) as e:
         print(f"Warning: save file has unexpected structure ({e}). Starting fresh.")
         return None
+
+
+def export_report(musician):
+    """Write a human-readable practice report to a .txt file.
+
+    Returns the path of the saved report.
+    """
+    lines = []
+    lines.append("GigReady Practice Report")
+    lines.append("=" * 40)
+    lines.append(f"Musician: {musician.name}")
+    lines.append(f"Weekly goal: {musician.weekly_goal} minutes")
+    lines.append(f"Total songs tracked: {len(musician.songs)}")
+    lines.append("")
+    lines.append("SONGS")
+    lines.append("-" * 40)
+
+    if not musician.songs:
+        lines.append("(no songs logged yet)")
+    else:
+        for song in musician.songs.values():
+            lines.append(f"\n{song.title}")
+            lines.append(f"  Sessions       : {song.session_count()}")
+            lines.append(f"  Total minutes  : {song.total_minutes()}")
+            lines.append(f"  Avg difficulty : {song.average_difficulty():.1f}/5")
+            lines.append(f"  Readiness score: {song.readiness_score()}/100")
+
+    with open(REPORT_FILE, "w") as f:
+        f.write("\n".join(lines))
+    return REPORT_FILE
